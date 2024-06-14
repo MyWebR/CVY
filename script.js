@@ -12,6 +12,13 @@ app.get('/', (req, res) => {
 
 app.get('/download', (req, res) => {
     const videoUrl = req.query.url;
+
+    // Validasi apakah URL merupakan URL YouTube
+    if (!ytdl.validateURL(videoUrl)) {
+        res.status(400).send({ status: 'error', message: 'URL yang dimasukkan bukan URL YouTube.' });
+        return;
+    }
+
     const video = ytdl(videoUrl, { filter: 'audioandvideo' });
 
     const savePath = './public/videos/video.mp4';
